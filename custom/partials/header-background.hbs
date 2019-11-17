@@ -1,0 +1,50 @@
+{{!--
+Wow what the hell is going on in here even?
+
+Ok so, several templates use this big header with a giant BG image. Nice idea, but big images
+have a heavy impact on performance, so it's a good idea to make them responsive. Because we
+can only get the image dynamically using Handlebars, and we can only set the image to properly
+be a background image using CSS, we end up with a handful of inline styles.
+
+If the template in question has a background image, then we render responsive image styles
+for it, and apply those styles to the <header> tag. Else, we just output a <header> tag
+with a `no-image` class so we can style it accordingly.
+--}}
+
+{{#if background}}
+
+<style type="text/css">
+    .responsive-header-img {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTA3IiBoZWlnaHQ9IjE2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBhcmlhLWxhYmVsbGVkYnk9IlN0ZWxsYXIgV29yZG1hcmsiPjx0aXRsZSBpZD0idGl0bGUiPlN0ZWxsYXIgV29yZG1hcms8L3RpdGxlPjxwYXRoIGQ9Ik0yMjMuMiA1MC4wOGMtMjguNTQgMC01MC42OCAyMS01MC42OCA1NC4xOCAwIDMwLjg3IDE4LjI1IDU0LjU2IDUxLjI2IDU0LjU2IDI1LjQ0IDAgNDIuMTMtMTQuOTUgNDYuNzktMzIuODJoLTE4LjI1Yy00LjQ2IDEwLjI5LTEzIDE3LjI4LTI4LjU0IDE3LjI4LTE1LjM0IDAtMzEuNjUtMTAuODctMzIuMjMtMzMuMzloODAuMzhjMi4xNC0zMy4yLTE2LjctNTkuODEtNDguNzMtNTkuODF6bS0zMS40NiA0NC42NmMxLjU2LTIxIDE1LjkzLTI5LjUxIDMxLjQ2LTI5LjUxIDE4LjgzIDAgMjkuNTEgMTQuNzYgMzAuMDkgMjkuNTFoLTYxLjU1ek02NS4wNyA3NS41MmwtMTYuMzEtMy42OWMtMTMuMi0yLjkxLTIyLjkxLTkuMTItMjIuOTEtMjEuNTUgMC0xNS43MyAxOS0yMC41OCAyOS45MS0yMC41OCAxNCAwIDMwLjI4IDUuNjMgMzQuOTQgMjEuNzRoMTkuMjNDMTA0LjI5IDI0LjQ2IDgyIDEzIDU2LjUzIDEzIDMzLjgxIDEzIDUuNjYgMjQuNDYgNS42NiA1MS40NGMwIDIzLjMgMTkuMjIgMzQuMTggMzguNjQgMzguNDVsMTcuNDcgMy42OWMxNy42NyA0LjA4IDMwLjI5IDkuOSAzMC4yOSAyNC44NSAwIDE0LTExLjg0IDIzLjY5LTMyLjgxIDIzLjY5LTIxLjk0IDAtMzUuMTQtMTAuMS0zOC44My0yOS41MkgxYzMuNjkgMjggMjQuNjYgNDYuMjIgNTcuODYgNDYuMjIgMjggMCA1My41OS0xNC43NiA1My41OS00Mi4xNCAwLTI4LjM0LTI1LjgyLTM2LjUtNDcuMzgtNDEuMTZ6bTg1LjMyLTQ5LjloLTE3LjY3djI2LjIxaC0xNi41MVY2NmgxNi41MXY2NC4wN2MwIDIxLjc1IDQuNjYgMjYuMjEgMjQuNjYgMjYuMjFoMTIuODF2LTE0Ljc0aC04LjkzYy0xMC4xIDAtMTAuODctMi43Mi0xMC44Ny0xMy42VjY2aDE5LjhWNTEuODNoLTE5LjhWMjUuNjJ6bTMyMC42IDQ0LjQ2VjUxLjgzSDQ1My43djEwNC40NmgxNy42N3YtNTQuNzVjMC0yMy4zIDguMTYtMzIgMjQuNDctMzJhNjIuMjUgNjIuMjUgMCAwIDEgOS45Ljc4VjUxLjQ0YTUyIDUyIDAgMCAwLTUuMjQtLjE5Yy0xMy43OS41OC0yNC4yNyA3LTI5LjUxIDE4Ljgzem0tMzQuMjkgNDYuOGwuMTktMjQuMDhjLjItMjkuNzEtMTIuMjMtNDMuMS00MS41NS00My4xLTIwLjE5IDAtNDAuMzggMTIuNjItNDEuOTQgMzUuMTRoMTguMjVjLjc4LTEzIDkuMTMtMjAuNzcgMjMuODktMjAuNzcgMTMuMiAwIDIzLjY4IDYuMjEgMjMuNjggMjUuNDNWOTJjLTQyLjcxIDQuNjYtNzAuNjcgMTItNzAuNjcgMzYuNyAwIDE5LjIyIDE2LjMxIDMwLjEgMzUuOTIgMzAuMSAxOC42NCAwIDI5LjMyLTYgMzUuNzItMTYuODkuMTUxIDQuODEuNjA1IDkuNjA3IDEuMzYgMTQuMzZoMTcuODdjLTIuMTQtOS44OC0yLjkyLTIxLjcyLTIuNzItMzkuMzl6bS0xNi4xMi00LjI4YzAgMjQuNjYtMTUuNzIgMzIuMjQtMzIuMjMgMzIuMjQtMTIuNjIgMC0yMC4xOS02LjYtMjAuMTktMTYuNTEgMC0xNC4zNyAyMC4zOS0xOS4yMiA1Mi40Mi0yMi4zM3Y2LjZ6TTI4My44MiAxNS40NWgxNy42N3YxNDAuODRoLTE3LjY3VjE1LjQ1em0zNS4zNCAwaDE3LjY3djE0MC44NGgtMTcuNjdWMTUuNDV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iIzkwOTA5MCIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iLjIiLz48L3N2Zz4=);
+        background-repeat: repeat;
+        overflow: hidden;
+        background-size: 50%;
+    }
+
+    @media(max-width: 1000px) {
+        .responsive-header-img {
+            background-image: url({{img_url background size='l'}});
+            background-image: -webkit-image-set(url({{img_url background size='l'}}) 1x,
+                url({{img_url background size='xl'}}) 2x);
+            background-image: image-set(url({{img_url background size='l'}}) 1x,
+                url({{img_url background size='xl'}}) 2x);
+        }
+    }
+
+    @media(max-width: 600px) {
+        .responsive-header-img {
+            background-image: url({{img_url background size='m'}});
+            background-image: -webkit-image-set(url({{img_url background size='m'}}) 1x,
+                url({{img_url background size='l'}}) 2x);
+            background-image: image-set(url({{img_url background size='m'}}) 1x,
+                url({{img_url background size='l'}}) 2x);
+        }
+    }
+</style>
+<div class="outer site-header-background responsive-header-img">
+
+{{else}}
+
+<div class="outer site-header-background no-image">
+
+{{/if}}
